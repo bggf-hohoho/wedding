@@ -144,7 +144,9 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors, sho
       />
 
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-gray-800">名單列表 (共 {vendors.length})</h2>
+        <h2 className={`font-bold text-gray-800 transition-all ${vendors.length >= 10 ? 'text-lg' : 'text-xl'}`}>
+          名單列表 (共 {vendors.length})
+        </h2>
         <div className="flex gap-2">
             <button
                 onClick={() => setShowQR(!showQR)}
