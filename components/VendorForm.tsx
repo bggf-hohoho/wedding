@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Vendor } from '../types';
-import { Plus, Trash2, Instagram, Upload, Image as ImageIcon, Link as LinkIcon, ZoomIn, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, QrCode } from 'lucide-react';
+import { Plus, Minus, Trash2, Instagram, Upload, Image as ImageIcon, Link as LinkIcon, ZoomIn, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, QrCode } from 'lucide-react';
 import { INITIAL_VENDORS, PRESET_VENDORS } from '../constants';
 
 interface VendorFormProps {
@@ -13,28 +13,40 @@ interface VendorFormProps {
 export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors, showQR, setShowQR }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const activeVendorIdRef = useRef<string | null>(null);
+  // Cache to store user edits by index
+  const vendorCache = useRef<{ [index: number]: Vendor }>({});
 
   const handleAddVendor = () => {
-    // Determine if we should use a preset vendor based on current count
-    // Logic: if current count matches where a preset would be (relative to initial), use the preset.
-    // e.g., if we start with 3, index 0 of presets corresponds to vendors.length - 3 = 0.
-    const presetIndex = vendors.length - INITIAL_VENDORS.length;
+    const nextIndex = vendors.length;
     let newVendorTemplate: Vendor;
 
-    if (presetIndex >= 0 && presetIndex < PRESET_VENDORS.length) {
-      newVendorTemplate = PRESET_VENDORS[presetIndex];
-    } else {
-      newVendorTemplate = {
-        id: '', // Placeholder
-        name: '名稱',
-        role: '內文描述',
-        handle: '',
-        url: 'https://instagram.com',
-        imageUrl: `https://picsum.photos/400/400?random=${Date.now()}`,
-        scale: 50,
-        offsetX: 0,
-        offsetY: 0
-      };
+    // Priority 1: Restore from cache if user previously edited this slot
+    if (vendorCache.current[nextIndex]) {
+      newVendorTemplate = vendorCache.current[nextIndex];
+    } 
+    // Priority 2: Restore from Initial Vendors if available (e.g. re-adding #2 or #3)
+    else if (nextIndex < INITIAL_VENDORS.length) {
+      newVendorTemplate = INITIAL_VENDORS[nextIndex];
+    }
+    // Priority 3: Use Preset Vendors (e.g. #4, #5)
+    else {
+      const presetIndex = nextIndex - INITIAL_VENDORS.length;
+      if (presetIndex >= 0 && presetIndex < PRESET_VENDORS.length) {
+        newVendorTemplate = PRESET_VENDORS[presetIndex];
+      } else {
+        // Priority 4: Default Empty Template
+        newVendorTemplate = {
+          id: '', // Placeholder
+          name: '名稱',
+          role: '內文描述',
+          handle: '',
+          url: 'https://instagram.com',
+          imageUrl: `https://picsum.photos/400/400?random=${Date.now()}`,
+          scale: 50,
+          offsetX: 0,
+          offsetY: 0
+        };
+      }
     }
 
     const newVendor: Vendor = {
@@ -44,9 +56,17 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors, sho
     setVendors([...vendors, newVendor]);
   };
 
+  const handleRemoveLast = () => {
+    if (vendors.length > 1) {
+      setVendors(vendors.slice(0, -1));
+    }
+  };
+
   const handleUpdate = (id: string, field: keyof Vendor, value: string | number) => {
-    setVendors(vendors.map(v => {
+    setVendors(vendors.map((v, index) => {
       if (v.id !== id) return v;
+
+      let updatedVendor = { ...v, [field]: value };
 
       // Special logic for Instagram Handle
       if (field === 'handle' && typeof value === 'string') {
@@ -59,7 +79,7 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors, sho
         const shouldUpdateName = !currentName || currentName === v.handle || currentName === '名稱'; 
         const newName = shouldUpdateName ? cleanHandle : currentName;
 
-        return {
+        updatedVendor = {
           ...v,
           handle: cleanHandle, // Store without @ internally
           url: autoUrl,
@@ -67,7 +87,10 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors, sho
         };
       }
 
-      return { ...v, [field]: value };
+      // Update cache for this index
+      vendorCache.current[index] = updatedVendor;
+
+      return updatedVendor;
     }));
   };
 
@@ -96,13 +119,16 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors, sho
   };
 
   const handleMove = (id: string, dx: number, dy: number) => {
-    setVendors(vendors.map(v => {
+    setVendors(vendors.map((v, index) => {
       if (v.id !== id) return v;
-      return {
+      const updatedVendor = {
         ...v,
         offsetX: (v.offsetX || 0) + dx,
         offsetY: (v.offsetY || 0) + dy
       };
+      // Also update cache for position changes
+      vendorCache.current[index] = updatedVendor;
+      return updatedVendor;
     }));
   };
 
@@ -126,13 +152,20 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors, sho
                 title={showQR ? '點擊隱藏 QR Code' : '點擊顯示 QR Code'}
             >
                 <QrCode size={16} />
-                <span className="hidden sm:inline">{showQR ? 'QR On' : 'QR Off'}</span>
+                <span className="hidden sm:inline">QR</span>
             </button>
             <button 
               onClick={handleAddVendor}
-              className="flex items-center gap-1 bg-[#B76E79] hover:bg-[#9e5d66] text-white px-4 py-2 rounded-lg text-sm transition shadow-sm"
+              className="flex items-center gap-1 bg-[#B76E79] hover:bg-[#9e5d66] text-white px-2 py-2 rounded-lg text-sm transition shadow-sm"
             >
-              <Plus size={14} /> 新增名單
+              <Plus size={14} /> 新增
+            </button>
+            <button 
+              onClick={handleRemoveLast}
+              disabled={vendors.length <= 1}
+              className={`flex items-center gap-1 px-2 py-2 rounded-lg text-sm transition shadow-sm ${vendors.length <= 1 ? 'bg-gray-50 text-gray-300 border border-gray-100 cursor-not-allowed' : 'bg-[#B76E79] hover:bg-[#9e5d66] text-white'}`}
+            >
+              <Minus size={14} /> 減少
             </button>
         </div>
       </div>

@@ -218,7 +218,9 @@ const App: React.FC = () => {
              </button>
 
             <button onClick={toggleFullscreen} className="flex items-center gap-1.5 text-gray-600 hover:text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-50 transition">
-              <Monitor size={16} />
+              <div className="w-5 h-5 rounded-full overflow-hidden border border-gray-200 shadow-sm">
+                <AuthorImage className="w-full h-full" />
+              </div>
               <span className="text-sm font-medium">預覽</span>
             </button>
             
@@ -335,12 +337,24 @@ const App: React.FC = () => {
                 <div className="bg-gray-50 rounded-xl p-4 border border-[#EAEAEA] h-40 overflow-y-auto">
                    <div className="space-y-3">
                      <a 
+                       href="https://www.youtube.com/shorts/h9T8Z3vHZuk" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       className="flex gap-3 items-start p-2 rounded-lg hover:bg-gray-100 transition-colors -mx-2 group"
+                     >
+                        <span className="text-[10px] font-bold bg-[#FFD700] text-[#333333] px-1.5 py-0.5 rounded shrink-0 mt-0.5">v1.5</span>
+                        <div className="text-xs text-gray-600 group-hover:text-[#333333]">
+                          <p className="font-medium text-[#333333] group-hover:text-[#FF6F61] transition-colors">介面更新</p>
+                          優化左側欄位，新增『減少名單按鈕』。
+                        </div>
+                     </a>
+                     <a 
                        href="https://www.youtube.com/watch?v=82-dJnNssK0" 
                        target="_blank" 
                        rel="noopener noreferrer"
                        className="flex gap-3 items-start p-2 rounded-lg hover:bg-gray-100 transition-colors -mx-2 group"
                      >
-                        <span className="text-[10px] font-bold bg-[#FFD700] text-[#333333] px-1.5 py-0.5 rounded shrink-0 mt-0.5">v1.4</span>
+                        <span className="text-[10px] font-bold bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded shrink-0 mt-0.5">v1.4</span>
                         <div className="text-xs text-gray-600 group-hover:text-[#333333]">
                           <p className="font-medium text-[#333333] group-hover:text-[#FF6F61] transition-colors">迷因彩蛋</p>
                           增加迷因彩蛋，供使用者耗費無謂的心神。

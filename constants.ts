@@ -30,7 +30,26 @@ export const INITIAL_VENDORS: Vendor[] = [
   }
 ];
 
-export const PRESET_VENDORS: Vendor[] = [];
+export const PRESET_VENDORS: Vendor[] = [
+  {
+    id: 'preset-4',
+    role: '一般女性孕產婦按摩',
+    name: '泌乳明師',
+    handle: 'mizooming',
+    url: 'https://www.instagram.com/mizooming',
+    imageUrl: 'https://ugc.production.linktr.ee/b3400246-40c1-49d8-a64a-459ffb6ac96b_IMG_8115.jpeg?io=true&size=avatar-v3_0',
+    scale: 50,
+  },
+  {
+    id: 'preset-5',
+    role: '逢甲知名早午餐',
+    name: 'LOWCA勞咖早午餐',
+    handle: 'lowca__',
+    url: 'https://www.instagram.com/lowca__',
+    imageUrl: 'https://scontent.fkhh1-1.fna.fbcdn.net/v/t39.30808-6/358598805_690029403137594_1984024008636193652_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=rokvTntBK5YQ7kNvwHJQSoL&_nc_oc=AdmZQ3uYZt1W2kPjnCT8PBJwUlcffDwrAdIrOcqwCljieKT9igPj5C6Ys0sos_jOHjY&_nc_zt=23&_nc_ht=scontent.fkhh1-1.fna&_nc_gid=3r2OQ2CIRu8yw4ooaxPDeg&oh=00_AfnRdCcEnL70e0FTN-kREccX6AuHytoI4MrMjYT3OqA0nQ&oe=6938283D',
+    scale: 50,
+  }
+];
 
 export const STYLE_CONFIG = {
   // 1. 優雅極簡
