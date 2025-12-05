@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Monitor, CheckCircle, 
-  Palette, X, Info, FileText, MoreHorizontal
+  Palette, X, Info, FileText, MoreHorizontal,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { PreviewPlayer } from './components/PreviewPlayer';
 import { VendorForm } from './components/VendorForm';
@@ -20,6 +21,20 @@ const App: React.FC = () => {
   const [showControls, setShowControls] = useState(false);
   const [showMoreModal, setShowMoreModal] = useState(false);
   const controlsTimeoutRef = useRef<number | null>(null);
+
+  // Helper to cycle styles in fullscreen
+  const styleKeys = Object.keys(STYLE_CONFIG) as StyleType[];
+
+  const changeStyle = (direction: 'prev' | 'next') => {
+    const currentIndex = styleKeys.indexOf(currentStyle);
+    let newIndex;
+    if (direction === 'next') {
+      newIndex = (currentIndex + 1) % styleKeys.length;
+    } else {
+      newIndex = (currentIndex - 1 + styleKeys.length) % styleKeys.length;
+    }
+    setCurrentStyle(styleKeys[newIndex]);
+  };
 
   const toggleFullscreen = () => {
     const elem = document.documentElement;
@@ -97,6 +112,29 @@ const App: React.FC = () => {
         >
            <X size={14} />
         </button>
+
+        {/* Style Navigation Controls (Bottom Center) */}
+        <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-6 transition-all duration-500 z-50 ${showControls ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
+           <button 
+             onClick={(e) => { e.stopPropagation(); changeStyle('prev'); }}
+             className="bg-black/30 hover:bg-black/60 text-white p-3 rounded-full backdrop-blur-md border border-white/10 shadow-lg hover:scale-110 transition-all active:scale-95 group"
+             title="上一個風格"
+           >
+             <ChevronLeft size={24} className="group-hover:-translate-x-0.5 transition-transform" />
+           </button>
+
+           <div className="px-6 py-2 bg-black/30 backdrop-blur-md rounded-full border border-white/10 text-white font-bold text-base shadow-lg tracking-wider min-w-[140px] text-center select-none">
+              {STYLE_CONFIG[currentStyle].label}
+           </div>
+
+           <button 
+             onClick={(e) => { e.stopPropagation(); changeStyle('next'); }}
+             className="bg-black/30 hover:bg-black/60 text-white p-3 rounded-full backdrop-blur-md border border-white/10 shadow-lg hover:scale-110 transition-all active:scale-95 group"
+             title="下一個風格"
+           >
+             <ChevronRight size={24} className="group-hover:translate-x-0.5 transition-transform" />
+           </button>
+        </div>
       </div>
     );
   }
@@ -106,24 +144,22 @@ const App: React.FC = () => {
       
       {/* Sidebar: Configuration */}
       <div className="w-full md:w-[400px] bg-[#F8F7F4] border-r border-[#E5E0D8] flex flex-col h-full z-10 shadow-xl">
-        {/* Header - Height matched to h-16 (64px) to align with right side */}
-        <div className="h-16 px-6 border-b border-[#E5E0D8] bg-[#F8F7F4] flex items-center shrink-0">
+        {/* Header - Height adjusted to accommodate stacking */}
+        <div className="h-16 px-6 border-b border-[#E5E0D8] bg-[#F8F7F4] flex flex-col justify-center shrink-0">
            <div className="flex items-baseline gap-2 w-full overflow-hidden">
              <h1 className="text-2xl font-black text-[#4A4036] tracking-tight flex items-center shrink-0">
                <span className="text-[#B38867]">List</span>Deck
              </h1>
-             <div className="flex items-baseline gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
-                <span className="text-sm text-[#786C5E] font-bold shrink-0">廠商名單產生器</span>
-                <a 
-                  href="https://www.instagram.com/bgg.feng/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-[10px] text-[#B38867]/70 hover:text-[#B38867] font-medium transition-colors truncate"
-                >
-                  By 小豐aka喜劇受害人(@Bgg.Feng)
-                </a>
-             </div>
+             <span className="text-sm text-[#786C5E] font-bold shrink-0">廠商名單產生器</span>
            </div>
+           <a 
+             href="https://www.instagram.com/bgg.feng/" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             className="text-[10px] text-[#B38867]/70 hover:text-[#B38867] font-medium transition-colors truncate mt-0.5"
+           >
+             By 小豐aka喜劇受害人(@Bgg.Feng)
+           </a>
         </div>
 
         <div className="flex-1 p-6 overflow-hidden">
@@ -135,19 +171,17 @@ const App: React.FC = () => {
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
         
         {/* Top Bar */}
-        <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
-          {/* Modified: Only "More" Button remains here */}
-          <div className="flex items-center gap-4">
-             <button 
+        <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-end px-6 shrink-0">
+          
+          <div className="flex items-center gap-2">
+            <button 
                 onClick={() => setShowMoreModal(true)}
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-bold text-sm px-3 py-1.5 transition-all hover:bg-gray-100 rounded-full border border-transparent hover:border-gray-200"
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-bold text-sm px-3 py-1.5 transition-all hover:bg-gray-100 rounded-lg"
              >
                 <MoreHorizontal size={18} />
-                更多資訊
+                更多
              </button>
-          </div>
 
-          <div className="flex items-center gap-2">
             <button onClick={toggleFullscreen} className="flex items-center gap-1.5 text-gray-600 hover:text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-50 transition">
               <Monitor size={16} />
               <span className="text-sm font-medium">預覽</span>

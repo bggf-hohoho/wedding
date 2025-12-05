@@ -19,7 +19,7 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors }) =
       handle: '',
       url: 'https://instagram.com',
       imageUrl: `https://picsum.photos/400/400?random=${Date.now()}`,
-      scale: 70
+      scale: 50
     };
     setVendors([...vendors, newVendor]);
   };
@@ -99,20 +99,28 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors }) =
       <div className="flex-1 overflow-y-auto pr-2 space-y-4 pb-10">
         {vendors.map((vendor, index) => (
           <div key={vendor.id} className="bg-white border border-[#B38867]/30 rounded-xl p-5 shadow-sm hover:shadow-md transition relative group">
-            <div className="flex justify-between items-center mb-4 border-b border-[#B38867]/20 pb-2">
-              <span className="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded font-mono">#{index + 1}</span>
-              <button onClick={() => handleRemove(vendor.id)} className="text-gray-400 hover:text-red-500 p-1 rounded hover:bg-red-50 transition">
-                <Trash2 size={16} />
-              </button>
-            </div>
             
             <div className="space-y-4">
               
               {/* Primary Input: Instagram - Updated to Dry Rose theme */}
               <div className="bg-[#FAF0F0] p-3 rounded-lg border border-[#ECD9D9]">
-                <label className="text-xs font-bold text-[#B47474] mb-1 block flex items-center gap-1">
-                  <Instagram size={14}/> 輸入 IG 帳號 (自動產生連結與名稱)
-                </label>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="text-xs font-bold text-[#B47474] flex items-center">
+                    <span className="bg-white/60 border border-[#B47474]/20 text-[#B47474] text-[10px] px-1.5 py-0.5 rounded font-mono mr-2">
+                      #{index + 1}
+                    </span>
+                    <Instagram size={14} className="mr-1"/> 
+                    輸入 IG 帳號
+                  </label>
+                  <button 
+                    onClick={() => handleRemove(vendor.id)} 
+                    className="text-[#B47474]/40 hover:text-red-500 transition p-1"
+                    title="刪除"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+
                 <div className="relative">
                   <input 
                     type="text" 
@@ -159,7 +167,7 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors }) =
                             src={vendor.imageUrl} 
                             alt="Preview" 
                             className="w-full h-full object-cover"
-                            style={{ transform: `scale(${(vendor.scale || 70) / 50})` }}
+                            style={{ transform: `scale(${(vendor.scale || 50) / 50})` }}
                         />
                     </div>
                   </div>
@@ -191,11 +199,11 @@ export const VendorForm: React.FC<VendorFormProps> = ({ vendors, setVendors }) =
                         type="range" 
                         min="1" 
                         max="100" 
-                        value={vendor.scale || 70} 
+                        value={vendor.scale || 50} 
                         onChange={(e) => handleUpdate(vendor.id, 'scale', parseInt(e.target.value))}
                         className="flex-1 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#B76E79]"
                       />
-                      <span className="text-xs text-gray-500 font-mono w-8 text-right">{vendor.scale || 70}%</span>
+                      <span className="text-xs text-gray-500 font-mono w-8 text-right">{vendor.scale || 50}%</span>
                     </div>
                   </div>
                 </div>

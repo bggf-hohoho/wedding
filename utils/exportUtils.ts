@@ -93,7 +93,7 @@ export const generateStaticHTML = (vendors: Vendor[], style: StyleType): string 
   let contentHTML = '';
 
   // Helper for scale transform
-  const imgStyle = (v: any) => `transform: scale(${(v.scale || 70) / 50});`;
+  const imgStyle = (v: any) => `transform: scale(${(v.scale || 50) / 50});`;
 
   // Helper to generate grid items
   const renderCards = (cardContentFn: (v: any, i: number) => string, containerClass = 'container', cardClass = 'card') => `
@@ -148,23 +148,6 @@ export const generateStaticHTML = (vendors: Vendor[], style: StyleType): string 
       `);
       break;
 
-    case StyleType.MODERN_GRID:
-      styleCSS = `body { background: #f0f2f5; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
-      .container { display: grid; grid-template-columns: repeat(${count === 8 ? 4 : (count > 4 ? 3 : Math.min(count, 3))}, 1fr); gap: 2rem; width: 90%; max-width: 1400px; }
-      .card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; align-items: center; }
-      .img-wrap { width: 100%; height: 200px; border-radius: 12px; margin-bottom: 1rem; overflow: hidden; }
-      .img { width: 100%; height: 100%; object-fit: cover; }
-      h3 { color: #2563eb; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; margin: 0; }
-      h1 { font-size: 1.2rem; margin: 5px 0 15px 0; color: #1f2937; }
-      `;
-      contentHTML = renderCards(v => `
-        <div class="img-wrap"><img src="${v.imageUrl}" class="img" style="${imgStyle(v)}" /></div>
-        <h3>${v.role}</h3>
-        <h1>${v.name}</h1>
-        ${qrHtml(v)}
-      `);
-      break;
-
     case StyleType.RUSTIC_GARDEN:
       styleCSS = `body { background: #F0F4F1; font-family: serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
       .container { display: flex; flex-wrap: wrap; gap: 3rem; justify-content: center; }
@@ -188,8 +171,10 @@ export const generateStaticHTML = (vendors: Vendor[], style: StyleType): string 
       styleCSS = `body { background: #fff; font-family: serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
       .container { display: flex; flex-wrap: wrap; gap: 3rem; justify-content: center; }
       .card { border: 1px solid rgba(212, 175, 55, 0.3); outline: 1px solid rgba(212, 175, 55, 0.3); outline-offset: 4px; padding: 2rem; width: 260px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-      .img-wrap { width: 100px; height: 100px; border: 1px solid #D4AF37; padding: 4px; margin-bottom: 1rem; }
+      /* Update: Larger image container, no fixed size constraint */
+      .img-wrap { width: 100%; aspect-ratio: 4/5; border: 1px solid #D4AF37; padding: 4px; margin-bottom: 1rem; max-height: 180px; }
       .inner-wrap { width: 100%; height: 100%; overflow: hidden; }
+      /* Update: No grayscale */
       .img { width: 100%; height: 100%; object-fit: cover; }
       h3 { color: #D4AF37; letter-spacing: 0.2em; font-size: 0.7rem; margin: 0; }
       h1 { font-size: 1.4rem; margin: 0.5rem 0 1rem 0; color: #111; }
@@ -245,18 +230,48 @@ export const generateStaticHTML = (vendors: Vendor[], style: StyleType): string 
       contentHTML = renderCards(v => `<div class="img-wrap"><img src="${v.imageUrl}" class="img" style="${imgStyle(v)}" /></div><h1>${v.name}</h1><h3>${v.role}</h3><div class="btn">Follow</div>${qrHtml(v)}`);
       break;
 
-    case StyleType.MUJI_SIMPLE:
-      styleCSS = `body { background: #EFEBE9; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; color: #444; }
-      .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 3rem; }
-      .card { width: 240px; border-top: 1px solid #7F0019; padding-top: 1rem; display: flex; flex-direction: column; align-items: flex-start; }
-      .img-wrap { width: 100%; aspect-ratio: 4/3; margin-bottom: 0.8rem; overflow: hidden; }
-      .img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); }
-      h3 { color: #7F0019; font-size: 0.7rem; font-weight: bold; margin: 0 0 4px 0; }
-      h1 { font-size: 1.1rem; font-weight: bold; margin: 0 0 4px 0; color: #333; }
-      p { font-size: 0.7rem; color: #666; margin: 0 0 10px 0; }
-      .qr-wrap { padding: 4px; border: 1px solid #ddd; }
+    case StyleType.ART_DECO:
+      styleCSS = `body { background: #1a1a1a; font-family: serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+      .container { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+      /* Update: Desaturated gold borders */
+      .card { border: 2px solid #C5A582; padding: 4px; width: 240px; text-align: center; }
+      .inner-card { border: 1px solid #C5A582; padding: 1rem; height: 100%; background: #1a1a1a; display: flex; flex-direction: column; align-items: center; }
+      .img-wrap { width: 100%; aspect-ratio: 3/4; border: 1px solid #C5A582; padding: 4px; margin-bottom: 0.8rem; overflow: hidden; position: relative; }
+      .inner-img { width: 100%; height: 100%; overflow: hidden; }
+      /* Update: Reduced sepia */
+      .img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.2); }
+      /* Update: Desaturated gold text */
+      h3 { color: #E8DCC5; font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; border-bottom: 1px solid #C5A582; padding-bottom: 4px; margin: 0; }
+      h1 { color: #C5A582; font-size: 1.2rem; margin: 0.5rem 0 0 0; }
+      .qr-wrap { background: #C5A582; padding: 4px; margin-top: 1rem; border-radius: 0; }
       `;
-      contentHTML = renderCards(v => `<div class="img-wrap"><img src="${v.imageUrl}" class="img" style="${imgStyle(v)}" /></div><h3>${v.role}</h3><h1>${v.name}</h1>${qrHtml(v)}`);
+      contentHTML = renderCards(v => `
+        <div class="inner-card">
+          <div class="img-wrap"><div class="inner-img"><img src="${v.imageUrl}" class="img" style="${imgStyle(v)}" /></div></div>
+          <h3>${v.role}</h3>
+          <h1>${v.name}</h1>
+          ${qrHtml(v)}
+        </div>
+      `);
+      break;
+
+    case StyleType.WABI_SABI:
+      styleCSS = `body { background: #D6C6B0; font-family: serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+      .container { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+      .card { display: flex; flex-direction: column; align-items: center; width: 240px; text-align: center; }
+      .img-wrap { width: 100%; aspect-ratio: 1; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; overflow: hidden; margin-bottom: 1rem; }
+      .img { width: 100%; height: 100%; object-fit: cover; }
+      h3 { color: #786C5E; font-style: italic; font-size: 0.9rem; margin: 0 0 4px 0; }
+      h1 { color: #4A4036; font-size: 1.5rem; margin: 0 0 12px 0; letter-spacing: 1px; }
+      /* Update: Rounded Square QR container */
+      .qr-wrap { border: 1px solid #786C5E; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.4); backdrop-filter: blur(4px); }
+      `;
+      contentHTML = renderCards(v => `
+        <div class="img-wrap"><img src="${v.imageUrl}" class="img" style="${imgStyle(v)}" /></div>
+        <h3>${v.role}</h3>
+        <h1>${v.name}</h1>
+        ${qrHtml(v)}
+      `);
       break;
 
     default:

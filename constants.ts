@@ -7,8 +7,8 @@ export const INITIAL_VENDORS: Vendor[] = [
     name: '小豐',
     handle: 'Bgg.Feng',
     url: 'https://www.instagram.com/Bgg.Feng',
-    imageUrl: 'https://scontent.fkhh1-1.fna.fbcdn.net/v/t39.30808-6/472313105_1142259297417101_6741923655650414207_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=3a1ebe&_nc_ohc=VyETs_FcRGwQ7kNvwGf8J9D&_nc_oc=Adnlx22jp0qVXb_W1VN-1eXPx1DG3l8XOcQEOo_Jm-EpVvE0vgkyrtusK9wTRePZntA&_nc_zt=23&_nc_ht=scontent.fkhh1-1.fna&_nc_gid=xwn6yNZI_uie2wWPeWFt1g&oh=00_Afk9oe7nfHzdz2OpWlSH_Rj-dLfiykI7s5pZ7W6J8u12UQ&oe=69379DC8',
-    scale: 70,
+    imageUrl: 'https://scontent.fkhh1-2.fna.fbcdn.net/v/t39.30808-6/308606892_493333446137991_866753150527897559_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=wY0Bg8JpHhEQ7kNvwHcDXR3&_nc_oc=Adnl_Tb-ItiJ7vSxQMNEAtajlUhxE6uC2QuccvZN5j421MB9dB5nsZibc4dleWMvDDE&_nc_zt=23&_nc_ht=scontent.fkhh1-2.fna&_nc_gid=JZMevhKNiweWAjZ5NnwuIA&oh=00_AfmqQSfzjFDlanwrG5KwPkMkhgs7GWzyCBvrqIJx7rRoNA&oe=693807EF',
+    scale: 50,
   },
   {
     id: '2',
@@ -17,7 +17,7 @@ export const INITIAL_VENDORS: Vendor[] = [
     handle: 'aming_photo',
     url: 'https://www.instagram.com/aming_photo',
     imageUrl: 'https://picsum.photos/400/400?random=1',
-    scale: 70,
+    scale: 50,
   },
   {
     id: '3',
@@ -26,60 +26,12 @@ export const INITIAL_VENDORS: Vendor[] = [
     handle: 'bella_style',
     url: 'https://www.instagram.com/bella_style',
     imageUrl: 'https://picsum.photos/400/400?random=2',
-    scale: 70,
+    scale: 50,
   }
 ];
 
 export const STYLE_CONFIG = {
-  [StyleType.PLAYFUL_POP]: {
-    label: '活潑撞色',
-    subLabel: 'Playful Pop',
-    bg: 'bg-[#FFDEE9]',
-    text: 'text-[#2d3436]',
-    accent: 'text-[#d63031]',
-  },
-  [StyleType.WABI_SABI]: {
-    label: '侘寂美學',
-    subLabel: 'Wabi-Sabi',
-    bg: 'bg-[#D6C6B0]',
-    text: 'text-[#4A4036]',
-    accent: 'text-[#786C5E]',
-  },
-  [StyleType.BOHO_CHIC]: {
-    label: '波西米亞',
-    subLabel: 'Boho Chic',
-    bg: 'bg-[#E6D0C3]',
-    text: 'text-[#5D4037]',
-    accent: 'text-[#A16E5C]',
-  },
-  [StyleType.VINTAGE_POLAROID]: {
-    label: '復古拍立得',
-    subLabel: 'Vintage Polaroid',
-    bg: 'bg-[#E8E6E1]',
-    text: 'text-[#333333]',
-    accent: 'text-[#555555]',
-  },
-  [StyleType.COMIC_POP]: {
-    label: '美式畫風',
-    subLabel: 'Comic Pop',
-    bg: 'bg-[#FFEB3B]',
-    text: 'text-black',
-    accent: 'text-[#F44336]',
-  },
-  [StyleType.MODERN_GRID]: {
-    label: '現代網格',
-    subLabel: 'Modern Grid',
-    bg: 'bg-white',
-    text: 'text-black',
-    accent: 'text-blue-600',
-  },
-  [StyleType.RUSTIC_GARDEN]: {
-    label: '清新森林',
-    subLabel: 'Rustic Garden',
-    bg: 'bg-[#F0F4F1]',
-    text: 'text-[#2F3E32]',
-    accent: 'text-[#4A6741]',
-  },
+  // 1. 優雅極簡
   [StyleType.ELEGANT_MINIMAL]: {
     label: '優雅極簡',
     subLabel: 'Elegant Minimal',
@@ -87,6 +39,23 @@ export const STYLE_CONFIG = {
     text: 'text-[#4a4a4a]',
     accent: 'text-[#8b7355]',
   },
+  // 2. 活潑撞色
+  [StyleType.PLAYFUL_POP]: {
+    label: '活潑撞色',
+    subLabel: 'Playful Pop',
+    bg: 'bg-[#FFDEE9]',
+    text: 'text-[#2d3436]',
+    accent: 'text-[#d63031]',
+  },
+  // 3. 清新森林
+  [StyleType.RUSTIC_GARDEN]: {
+    label: '清新森林',
+    subLabel: 'Rustic Garden',
+    bg: 'bg-[#F0F4F1]',
+    text: 'text-[#2F3E32]',
+    accent: 'text-[#4A6741]',
+  },
+  // 4. 奢華大理石
   [StyleType.LUXURY_MARBLE]: {
     label: '奢華大理石',
     subLabel: 'Luxury Marble',
@@ -94,33 +63,61 @@ export const STYLE_CONFIG = {
     text: 'text-[#111111]',
     accent: 'text-[#D4AF37]',
   },
+  // 5. 粉彩萌系 (Moved to #5)
+  [StyleType.CUTE_KAWAII]: {
+    label: '粉彩萌系',
+    subLabel: 'Kawaii',
+    bg: 'bg-[#FFF0F5]',
+    text: 'text-[#555]',
+    accent: 'text-[#FF69B4]',
+  },
+  // 6. 復古拍立得
+  [StyleType.VINTAGE_POLAROID]: {
+    label: '復古拍立得',
+    subLabel: 'Vintage Polaroid',
+    bg: 'bg-[#E8E6E1]',
+    text: 'text-[#333333]',
+    accent: 'text-[#555555]',
+  },
+  // 7. 侘寂美學 (Moved to #7)
+  [StyleType.WABI_SABI]: {
+    label: '侘寂美學',
+    subLabel: 'Wabi-Sabi',
+    bg: 'bg-[#D6C6B0]',
+    text: 'text-[#4A4036]',
+    accent: 'text-[#786C5E]',
+  },
+  // 8. 波西米亞
+  [StyleType.BOHO_CHIC]: {
+    label: '波西米亞',
+    subLabel: 'Boho Chic',
+    bg: 'bg-[#E6D0C3]',
+    text: 'text-[#5D4037]',
+    accent: 'text-[#A16E5C]',
+  },
+  // 9. 復古奢華
+  [StyleType.ART_DECO]: {
+    label: '復古奢華',
+    subLabel: 'Art Deco',
+    bg: 'bg-[#1a1a1a]',
+    text: 'text-[#C5A582]', // Desaturated gold
+    accent: 'text-[#E8DCC5]',
+  },
+  // 10. 美式畫風
+  [StyleType.COMIC_POP]: {
+    label: '美式畫風',
+    subLabel: 'Comic Pop',
+    bg: 'bg-[#FFEB3B]',
+    text: 'text-black',
+    accent: 'text-[#F44336]',
+  },
+  // Others
   [StyleType.ANIME_MANGA]: {
     label: '復古雜誌',
     subLabel: 'Vintage Magazine',
     bg: 'bg-[#fff]',
     text: 'text-black',
     accent: 'text-[#ff0000]',
-  },
-  [StyleType.JAPANESE_ZEN]: {
-    label: '日式禪風',
-    subLabel: 'Japanese Zen',
-    bg: 'bg-[#F5F1E8]',
-    text: 'text-[#2C2C2C]',
-    accent: 'text-[#8E354A]',
-  },
-  [StyleType.CYBER_NEON]: {
-    label: '賽博霓虹',
-    subLabel: 'Cyber Neon',
-    bg: 'bg-[#050505]',
-    text: 'text-white',
-    accent: 'text-[#00ff9f]',
-  },
-  [StyleType.ART_DECO]: {
-    label: '復古奢華',
-    subLabel: 'Art Deco',
-    bg: 'bg-[#1a1a1a]',
-    text: 'text-[#E0AA3E]',
-    accent: 'text-[#F7E7CE]',
   },
   [StyleType.WATERCOLOR_DREAM]: {
     label: '夢幻水彩',
@@ -129,13 +126,6 @@ export const STYLE_CONFIG = {
     text: 'text-[#555]',
     accent: 'text-[#FF9A9E]',
   },
-  [StyleType.INDUSTRIAL_CHIC]: {
-    label: '率性工業',
-    subLabel: 'Industrial',
-    bg: 'bg-[#D1D5DB]',
-    text: 'text-[#111]',
-    accent: 'text-[#EA580C]',
-  },
   [StyleType.IOS_MODERN]: {
     label: 'iOS 風格',
     subLabel: 'iOS Modern',
@@ -143,53 +133,11 @@ export const STYLE_CONFIG = {
     text: 'text-black',
     accent: 'text-[#007AFF]',
   },
-  [StyleType.MUJI_SIMPLE]: {
-    label: '無印良品',
-    subLabel: 'Muji Style',
-    bg: 'bg-[#EFEBE9]',
-    text: 'text-[#444]',
-    accent: 'text-[#7F0019]',
-  },
   [StyleType.COFFEE_HOUSE]: {
     label: '星巴克風',
     subLabel: 'Coffee House',
     bg: 'bg-[#F8F8F8]',
     text: 'text-[#1E3932]',
     accent: 'text-[#00704A]',
-  },
-  [StyleType.NORDIC_HYGGE]: {
-    label: '北歐簡約',
-    subLabel: 'Nordic Hygge',
-    bg: 'bg-[#E8EEF2]',
-    text: 'text-[#3E4E59]',
-    accent: 'text-[#8DA9C4]',
-  },
-  [StyleType.JAPANESE_TRADITIONAL]: {
-    label: '和風傳統',
-    subLabel: 'Traditional',
-    bg: 'bg-[#2B2B2B]',
-    text: 'text-[#F0E68C]',
-    accent: 'text-[#B22222]',
-  },
-  [StyleType.SCI_FI_HUD]: {
-    label: '未來介面',
-    subLabel: 'Sci-Fi HUD',
-    bg: 'bg-[#000]',
-    text: 'text-[#00FFFF]',
-    accent: 'text-[#00FFFF]',
-  },
-  [StyleType.STREET_GRAFFITI]: {
-    label: '街頭塗鴉',
-    subLabel: 'Graffiti',
-    bg: 'bg-[#222]',
-    text: 'text-[#FFF]',
-    accent: 'text-[#FF00FF]',
-  },
-  [StyleType.CUTE_KAWAII]: {
-    label: '粉彩萌系',
-    subLabel: 'Kawaii',
-    bg: 'bg-[#FFF0F5]',
-    text: 'text-[#555]',
-    accent: 'text-[#FF69B4]',
   },
 };
